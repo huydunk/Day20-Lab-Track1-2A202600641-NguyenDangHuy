@@ -21,7 +21,7 @@
 4. Aha moment xảy ra ở đâu? Khi user **có trong tay một lịch khả thi, đáng tin mà mình đã chốt** — sau khi review nháp thực tế (nhãn Dữ kiện/Suy luận, T3 explainability) và thấy AI tự phát hiện & sửa lỗi (T6/T7) → "cái này dùng được & mình kiểm soát được". Thường trùng hoặc ngay sau core action (accept).
 5. Time to First Core Action hiện dài bao lâu? Tạo nháp (activation) ~**60–90s**; **chấp nhận nháp (first core action) ~2–4 phút** (gồm thời gian review/điều chỉnh). *(ước tính từ prototype, chưa có tracking)*
 6. Time to Value hiện dài bao lâu? ≈ **tới khi chấp nhận lịch** (~2–4 phút) — vì aha ≈ "đã có lịch chốt đáng tin". *(ước tính từ prototype)*
-7. Bước nào không cần thiết trước core action? **Ứng viên Delay:** 2 toggle quyền (Lịch, Vị trí) ở bước onboarding 2 — không cần để tạo nháp đầu tiên, có thể hỏi sau first value. `[DECIDE: xác nhận ở doc 04]`
+7. Bước nào không cần thiết trước core action? **Delay** 2 toggle quyền (Lịch, Vị trí) + câu "đi với ai" — không cần để tạo nháp, hỏi sau first value (đã chốt ở `04-onboarding-audit.md`).
 8. Recovery flow nào của Ngày 18 được giữ lại? **T6** (lịch quá dày → phát hiện → sửa → before/after + ghi nhớ) và **T7** (dữ liệu lỗi thời → cảnh báo + phương án thay thế).
 
 ## Current-State Journey (vẽ lại flow hiện tại)
@@ -50,11 +50,11 @@ Aha moment / first value — đã có một lịch khả thi, đáng tin & mình
 
 | Chỉ số | Current state |
 |---|---|
-| Số bước tới first core action | ~**7–8** (3 onboarding + điểm bắt đầu + 2 câu hỏi → xem nháp → review → bấm "Dùng lịch này") `[DECIDE: cách đếm]` |
+| Số bước tới first core action | ~**7–8** (3 onboarding + điểm bắt đầu + 2 câu hỏi → xem nháp → review → bấm "Dùng lịch này") |
 | Số trường thông tin phải nhập | ~**2 lựa chọn bắt buộc** (phong cách, đi với ai — chọn chip, có thể bỏ qua câu 2); điểm đến nhập ở entry point |
 | Số permission phải cấp | **0 bắt buộc** — 2 quyền tuỳ chọn (Lịch, Vị trí), mặc định TẮT, có thể bỏ qua |
 | Time to First Core Action (ước tính) | nháp ~60–90s (activation) → **chấp nhận ~2–4 phút** (first core action) *(ước tính)* |
 | Time to Value (ước tính) | ≈ tới khi chấp nhận lịch, ~**2–4 phút** *(ước tính)* |
-| Điểm drop-off có khả năng cao nhất | **Bước onboarding 2 (quyền)** hoặc **2 câu hỏi setup** — user phải làm vài thao tác *trước khi* thấy bất kỳ value nào. `[DECIDE: xác nhận]` |
+| Điểm drop-off có khả năng cao nhất | **Bước onboarding 2 (quyền)** hoặc **2 câu hỏi setup** — user phải làm vài thao tác *trước khi* thấy bất kỳ value nào. |
 
 > _Nếu chưa có dữ liệu tracking: ghi rõ đây là **ước tính từ prototype**._

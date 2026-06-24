@@ -353,37 +353,107 @@
 
   <!-- ============ 05 REDESIGNED ONBOARDING → FIRST CORE ACTION (DAY 20 SCAFFOLD) ============ -->
   <!--
-    TODO Day20 (Bài 3 — §10): Đây là KHUNG để nhóm tự thiết kế lại onboarding.
-    Mục tiêu: đưa user tới FIRST CORE ACTION nhanh nhất, bỏ/hoãn bước thừa.
-    Hành trình mục tiêu (lab §10): vào sản phẩm → hiểu value → minimum setup →
-      hướng dẫn hành vi thật → FIRST CORE ACTION → evidence of value → aha moment → bước tiếp.
-    - Điền core action thực tế từ docs/02-core-action-active-user.md.
-    - Gắn các event marker [event: ...] theo docs/11-metric-tracking.md.
-    - Giữ Day 18 (screens 01–04) nguyên vẹn để phân biệt phần Day 18 vs Day 20.
+    Day20 (Bài 3 — §10): Onboarding tối ưu, bản thiết kế lại (moderate-interactive).
+    Mục tiêu: rút ngắn đường tới FIRST CORE ACTION = user CHẤP NHẬN lịch nháp ("Dùng lịch này").
+    Thay đổi chính so với Day 18 (screens 01–04):
+      • Hoãn 2 quyền (Lịch, Vị trí) tới SAU first value (đúng ngữ cảnh).
+      • Minimum setup chỉ 1 câu cốt lõi (phong cách); "đi với ai" hoãn lại.
+      • Thêm nút "Dùng lịch này" = core action có thể đo (event itinerary_accepted).
+      • Evidence of value tường minh ngay tại/sau accept.
+      • Giữ recovery T6/T7 (reachable từ trạng thái đã accept).
+    Giữ Day 18 (screens 01–04) NGUYÊN VẸN để làm tham chiếu Before & phân biệt phần Day 18 vs Day 20.
+    Event markers (HTML comment) — chốt định nghĩa ở docs/11-metric-tracking.md.
   -->
   <section id="s05" class="secblock">
     <div class="crumbs">Bổ sung Day 20 · Bài 3 — Onboarding → First Core Action</div>
     <h1>Onboarding tối ưu (bản thiết kế lại)</h1>
-    <p class="lead">Khung scaffold — thay nội dung TODO bằng thiết kế thật của nhóm. Mỗi bước nên có CTA rõ và rút ngắn đường tới first core action.</p>
+    <p class="lead">Bản "After": ít bước hơn trước core action, hoãn quyền tới sau first value, và một <b>core action đo được</b> — bấm <b>"Dùng lịch này"</b>. So sánh với screen 01 (Before).</p>
 
-    <div class="callout"><b>⚠️ TODO:</b> So sánh với onboarding Day 18 (screen 01). Audit Keep / Remove / Delay / Simplify ở <code>docs/04-onboarding-audit.md</code>; ghi Before/After ở <code>docs/06-before-after-recovery.md</code>.</div>
+    <div class="callout"><b>So với Day 18:</b> <span class="badge b-act">Hoãn: 2 quyền</span> <span class="badge b-act">Setup: 2 câu → 1 câu</span> <span class="badge b-ev">+ Core action: "Dùng lịch này"</span> <span class="badge b-ev">+ Evidence of value</span> · audit ở <code>docs/04</code>, Before/After ở <code>docs/06</code>.</div>
 
     <div class="screen" style="margin-top:14px">
-      <div class="topbar"><span><span class="dot"></span> Lộ Trình AI · Onboarding mới</span><span class="small">Day 20</span></div>
+      <div class="topbar"><span><span class="dot"></span> Lộ Trình AI · Onboarding mới</span><span class="small" id="r5StepLabel">Bước 1 / 4</span></div>
       <div class="body">
-        <!-- [event: onboarding_started] — ghi khi user mở luồng onboarding mới -->
-        <div class="loop">
-          <div class="loopstep"><div class="num">1</div><div class="c"><div class="t">User bước vào &amp; hiểu value proposition</div><div class="d muted">TODO: 1 dòng value rõ ràng, không product tour dài.</div></div></div>
-          <div class="loopstep"><div class="num">2</div><div class="c"><div class="t">Minimum setup</div><div class="d muted">TODO: chỉ giữ field tối thiểu cần để tạo first value · Delay phần còn lại. <!-- [event: setup_completed] --></div></div></div>
-          <div class="loopstep"><div class="num">3</div><div class="c"><div class="t">Hướng dẫn thực hiện hành vi thật</div><div class="d muted">TODO: cho user làm thật thay vì chỉ xem.</div></div></div>
-          <div class="loopstep"><div class="num">4</div><div class="c"><div class="t">★ FIRST CORE ACTION</div><div class="d muted">TODO: điền core action (từ docs/02). <!-- [event: first_core_action] --></div></div></div>
-          <div class="loopstep"><div class="num">5</div><div class="c"><div class="t">Evidence of value → Aha moment</div><div class="d muted">TODO: hiển thị bằng chứng value ngay sau core action. <!-- [event: activation / aha_moment] --></div></div></div>
-          <div class="loopstep"><div class="num">6</div><div class="c"><div class="t">Recovery path (giữ/cải thiện từ Day 18)</div><div class="d muted">TODO: chọn ≥1 trường hợp recovery (lab §10) — đưa user quay lại core action, không kết thúc ở màn lỗi.</div></div></div>
+        <div class="stepper"><span class="sd on" id="r5sd1"></span><span class="sd" id="r5sd2"></span><span class="sd" id="r5sd3"></span><span class="sd" id="r5sd4"></span></div>
+
+        <!-- ===== Bước 1: Value prop + thử ngay ngay lập tức ===== -->
+        <!-- [event: onboarding_started] — ghi khi user mở luồng onboarding tối ưu -->
+        <div id="r5s1">
+          <h3 style="margin-top:4px">🧭 Lên lịch một chuyến đi khả thi trong ~1 phút</h3>
+          <p class="small muted">Nói cho mình điểm đến — bạn sẽ có ngay một lịch nháp theo ngày, sửa được, không ràng buộc gì. <b>Mọi quyền & chi tiết hỏi sau.</b></p>
+          <div style="margin:8px 0">
+            <button class="chip" onclick="r5go('Đà Nẵng 3 ngày')">📍 Đi Đà Nẵng 3 ngày</button>
+            <button class="chip" onclick="r5go('Gợi ý giúp tôi')">✨ Chưa rõ — gợi ý giúp tôi</button>
+          </div>
+          <div class="sysfb">🛈 Không cần tạo tài khoản, không cần cấp quyền để bắt đầu. Bạn giữ quyền quyết định cuối cùng.</div>
         </div>
-        <div class="row spread" style="margin-top:12px"><span class="small muted">TTFA &amp; TTV: TODO ước tính</span><button class="btn primary" onclick="go('s01')">↔ So với onboarding Day 18</button></div>
+
+        <!-- ===== Bước 2: Minimum setup — 1 câu cốt lõi ===== -->
+        <div id="r5s2" class="hide">
+          <h3 style="margin-top:4px">Chỉ 1 câu để lịch không bị lệch 👇</h3>
+          <div class="sysfb" style="margin:6px 0">🛈 Vì sao hỏi: <b>phong cách</b> quyết định mật độ điểm/ngày. "Đi với ai" & ngân sách <b>hỏi sau</b> khi bạn đã thấy lịch.</div>
+          <div class="msg ai" style="max-width:100%">
+            <div class="who">Phong cách chuyến đi?</div>
+            <div style="margin-top:6px">
+              <button class="chip" onclick="r5setStyle(this,'Nghỉ dưỡng')">😌 Nghỉ dưỡng</button>
+              <button class="chip" onclick="r5setStyle(this,'Khám phá')">🧭 Khám phá nhiều điểm</button>
+              <button class="chip" onclick="r5setStyle(this,'Cân bằng')">⚖️ Cân bằng</button>
+            </div>
+          </div>
+          <!-- [event: setup_completed] — sau khi chọn phong cách -->
+        </div>
+
+        <!-- ===== Bước 3: AI tạo nháp → mini lịch + evidence of value ===== -->
+        <div id="r5s3" class="hide">
+          <div id="r5gen">
+            <div class="ai-state"><span class="spinner"></span> AI đang dựng lịch nháp khả thi…</div>
+            <div class="progress"><i></i></div>
+            <div class="small muted">Đang cân: khoảng cách di chuyển · giờ mở cửa · mật độ theo phong cách.</div>
+          </div>
+          <div id="r5draft" class="hide">
+            <!-- [event: draft_generated] = mốc ACTIVATION (chưa phải core action) -->
+            <div class="daybar">📅 Ngày 1 <span class="pill" id="r5stylePill">Cân bằng</span> <span class="badge b-stage">BẢN NHÁP</span></div>
+            <div class="stop"><div class="time">08:30</div><div class="meta"><div class="nm">Bãi biển Mỹ Khê <span class="badge b-fact">Dữ kiện · cách trung tâm 1.2km</span></div><div class="sub">Tắm biển, ăn sáng.</div></div></div>
+            <div class="stop"><div class="time">11:00</div><div class="meta"><div class="nm">Bảo tàng Chăm <span class="badge b-infer">Suy luận · hợp phong cách</span></div></div></div>
+            <div class="stop"><div class="time">14:30</div><div class="meta"><div class="nm">Ngũ Hành Sơn <span class="badge b-fact">Dữ kiện · mở 7:00–17:30</span></div></div></div>
+
+            <div class="evidence" style="margin-top:10px">
+              <div class="row spread"><b class="small">✅ Vì sao lịch này khả thi</b><span class="badge b-ev">Evidence of value</span></div>
+              <div class="erow"><span>Mật độ</span><span class="small"><b>4 điểm/ngày</b> · vừa sức</span></div>
+              <div class="erow"><span>Di chuyển</span><span class="small">~<b>1.5h/ngày</b> · không lòng vòng</span></div>
+              <div class="erow" style="border:0"><span>Nguồn dữ liệu</span><span class="muted small">đồng bộ gần đây · có nhãn độ tin cậy</span></div>
+            </div>
+
+            <!-- ===== Bước 4: ★ FIRST CORE ACTION = chấp nhận lịch ===== -->
+            <div class="row spread" style="margin-top:14px">
+              <span class="small muted">Lịch là bản nháp tới khi bạn chốt.</span>
+              <button class="btn primary" id="r5acceptBtn" onclick="r5accept()">✓ Dùng lịch này</button>
+            </div>
+            <!-- [event: itinerary_accepted] = ★ FIRST CORE ACTION (bấm "Dùng lịch này") -->
+            <div class="small muted" style="margin-top:8px">Chưa ưng? <a href="javascript:void(0)" onclick="r5setSec('r5s2')">đổi phong cách</a> · hoặc sửa từng điểm sau.</div>
+          </div>
+        </div>
+
+        <!-- ===== Sau accept: aha + quyền (deferred) + recovery ===== -->
+        <div id="r5done" class="hide">
+          <div class="sysfb" style="border-left:3px solid var(--act);background:var(--act-soft)">🎉 <b>Đã lưu lịch của bạn!</b> Bạn vừa có một lịch Đà Nẵng 3 ngày khả thi, đáng tin & sửa được — đây là <b>first value</b>.</div>
+
+          <h3 style="margin:14px 0 6px">Giờ mới hỏi thêm (tuỳ chọn) — đúng lúc bạn đã thấy giá trị</h3>
+          <!-- [event: permission_prompted_deferred] — quyền chỉ hỏi SAU first value -->
+          <div class="permrow"><div class="pt"><b>Kết nối Lịch</b><span>Tránh xếp trùng ngày bận.</span></div><div class="toggle" id="r5tgCal" onclick="tog('r5tgCal')"></div></div>
+          <div class="permrow"><div class="pt"><b>Vị trí</b><span>Ước lượng phương tiện & quãng đường chính xác hơn.</span></div><div class="toggle" id="r5tgLoc" onclick="tog('r5tgLoc')"></div></div>
+          <div class="permrow"><div class="pt"><b>Đi với ai?</b><span>Tinh chỉnh nhịp đi — hỏi sau vì không cần để tạo lịch.</span></div><span class="badge b-stage">hoãn từ onboarding</span></div>
+
+          <div class="warnbar" style="margin-top:14px">⚠️ <span><b>Recovery vẫn sẵn:</b> nếu thấy một ngày quá dày hoặc dữ liệu lỗi thời, bạn quay lại đúng luồng sửa của Day 18.</span></div>
+          <div class="row" style="margin-top:8px">
+            <button class="btn sm" onclick="go('s04')">Lịch quá dày? → sửa (T6)</button>
+            <button class="btn sm" onclick="go('s04')">Dữ liệu cũ? → thay thế (T7)</button>
+          </div>
+          <div class="row spread" style="margin-top:14px"><span class="small muted">TTFA ~1–2 phút (ước tính)</span><button class="btn" onclick="go('s01')">↔ So với onboarding Day 18</button></div>
+        </div>
       </div>
     </div>
-    <div class="docref">📄 Phân tích đầy đủ → <code>docs/05-onboarding-redesign.md</code></div>
+    <div class="docref">📄 Phân tích đầy đủ → <code>docs/05-onboarding-redesign.md</code> · Before/After → <code>docs/06-before-after-recovery.md</code></div>
   </section>
 
   </main>
@@ -468,6 +538,42 @@
     else { document.getElementById('t7verify').classList.remove('hide'); document.getElementById('t7alt').classList.add('hide'); el.classList.add('primary'); }
   }
   function t7replace(){ document.getElementById('t7alt').classList.add('hide'); document.getElementById('t7done').classList.remove('hide'); }
+
+  /* ===== Day 20 — redesigned onboarding (screen 05) ===== */
+  let r5style='';
+  function r5setStep(n){
+    [1,2,3,4].forEach(i=>{const el=document.getElementById('r5sd'+i); if(el) el.classList.toggle('on', i<=n);});
+    const lbl=document.getElementById('r5StepLabel'); if(lbl) lbl.textContent='Bước '+n+' / 4';
+  }
+  function r5setSec(id){
+    ['r5s1','r5s2','r5s3'].forEach(s=>{const el=document.getElementById(s); if(el) el.classList.toggle('hide', s!==id);});
+    if(id==='r5s2') r5setStep(2);
+  }
+  function r5go(dest){ /* từ entry chip — [event: onboarding_started → setup] */
+    r5setSec('r5s2');
+    document.getElementById('r5s2').scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  function r5setStyle(el,v){ /* [event: setup_completed] */
+    el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel')); el.classList.add('sel');
+    r5style=v;
+    r5setSec('r5s3'); r5setStep(3);
+    document.getElementById('r5gen').classList.remove('hide');
+    document.getElementById('r5draft').classList.add('hide');
+    document.getElementById('r5done').classList.add('hide');
+    const b=document.getElementById('r5acceptBtn'); b.disabled=false; b.innerHTML='✓ Dùng lịch này';
+    setTimeout(()=>{ /* [event: draft_generated] = activation */
+      document.getElementById('r5gen').classList.add('hide');
+      document.getElementById('r5draft').classList.remove('hide');
+      document.getElementById('r5stylePill').textContent=v;
+      document.getElementById('r5draft').scrollIntoView({behavior:'smooth',block:'center'});
+    },1600);
+  }
+  function r5accept(){ /* ★ [event: itinerary_accepted] = FIRST CORE ACTION */
+    const b=document.getElementById('r5acceptBtn'); b.disabled=true; b.innerHTML='✓ Đã lưu';
+    r5setStep(4);
+    document.getElementById('r5done').classList.remove('hide');
+    document.getElementById('r5done').scrollIntoView({behavior:'smooth',block:'center'});
+  }
 </script>
 </body>
 </html>
