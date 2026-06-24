@@ -17,7 +17,7 @@
 | External trigger hiện có | **Trong chuyến:** push "lịch hôm nay", cảnh báo điểm quá dày (T6) / dữ liệu cũ (T7). **Giữa các chuyến:** email/nội dung gợi ý điểm đến. |
 | Một hoạt động nurture phù hợp | **Giữa chuyến:** content gợi ý điểm đến theo mùa + "lưu ý tưởng du lịch". **Trong chuyến:** nhắc lịch hôm nay & đề xuất điều chỉnh đúng lúc. |
 | Vì sao nurture **không quá dày hoặc quá thưa**? | **Không spam ngoài chuyến** (user không có nhu cầu → dày sẽ gây churn/opt-out); **dày hợp lý trong chuyến** vì đúng nhu cầu daily. Nurture **khuếch đại** nhịp tự nhiên, không tạo nhu cầu giả. |
-| Metric dùng để theo dõi tác động | Trip-to-trip retention (120 ngày) · in-trip engagement · notification opt-out rate. |
+| Metric dùng để theo dõi tác động | Trip-to-trip retention (@30/60/90 ngày) · in-trip engagement · notification opt-out rate. |
 
 > Nếu core use case có **frequency thấp**, có thể cân nhắc hành vi/use case liên quan có frequency
 > cao hơn để duy trì sự hiện diện — **không** giả định user dùng hằng ngày một cách gượng ép.

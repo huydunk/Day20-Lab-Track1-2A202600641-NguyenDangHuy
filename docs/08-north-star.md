@@ -12,7 +12,7 @@ vanity metric · hành động được · dễ hiểu · đo được.
 | **North Star Metric** (1) | **Số lịch trình được CHẤP NHẬN & SỬ DỤNG trong chuyến, mỗi tháng.** Đo từ `itinerary_accepted` + event "dùng lịch trong chuyến" (in-trip usage). Đạt tiêu chí NSM: thể hiện value · leading · **không vanity** (accept mà không dùng thì không tính) · actionable · dễ hiểu · đo được. |
 | **Input Metric 1** | **Activation Rate** — % `onboarding_started → itinerary_accepted` (nhiều user đạt first value). |
 | **Input Metric 2** | **Draft→Accept conversion** — % `draft_generated → itinerary_accepted` (chất lượng nháp đủ tốt để chốt). |
-| **Input Metric 3** _(tối đa 3)_ | **Trip-to-trip retention (120 ngày)** — % user quay lại lập/chấp nhận chuyến kế tiếp. |
+| **Input Metric 3** _(tối đa 3)_ | **Trip-to-trip retention (@30/60/90 ngày)** — % user quay lại lập/chấp nhận chuyến kế tiếp. |
 | Kết quả business / customer value (trung–dài hạn) | Doanh thu **affiliate booking** + tăng trưởng do **word-of-mouth/referral** + **niềm tin & sự hài lòng** của user. |
 | Đâu là **leading** indicator? | **North Star** + 3 input metric (báo trước value & tăng trưởng tương lai). |
 | Đâu là **lagging** indicator? | **Affiliate revenue, churn, cohort retention trưởng thành** (phản ánh kết quả sau khi đã xảy ra). |

@@ -33,7 +33,7 @@ Revenue
 - [x] Time to Value
 - [x] Retention
 - [ ] D1 / D7 / D30 Retention — ❌ không làm thước đo chính (use case 5–8 chuyến/năm)
-- [x] Cohort Retention — monthly cohort **+ trip-to-trip (120 ngày)**
+- [x] Cohort Retention — monthly cohort **+ trip-to-trip (đường cong @30/60/90 ngày)**
 - [x] Churn
 
 ### Engagement & Stickiness
@@ -58,7 +58,7 @@ Revenue
 |---|---|---|
 | Activation | Activation Rate · Time to Value | Bao nhiêu % user đạt first value (chấp nhận lịch) và nhanh thế nào? |
 | Core Action | Số `itinerary_accepted` · **accepted-and-used** | User có thực sự nhận value (chấp nhận & dùng lịch) không? |
-| Retention | Trip-to-trip (120 ngày) · monthly cohort · Churn | User có quay lại lập/chấp nhận chuyến kế tiếp không? |
+| Retention | Trip-to-trip (@30/60/90 ngày) · monthly cohort · Churn | User có quay lại lập/chấp nhận chuyến kế tiếp không? |
 | Usage / Active | Active user (usage-inclusive 30 ngày) · MAU | Còn bao nhiêu user thật sự dùng trong tháng? |
 | Engagement | Engagement · Frequency (chuyến/năm) | Mức & nhịp dùng có khớp nhịp tự nhiên không? |
 | Revenue / Business | Affiliate commission · LTV · CAC | Value có chuyển thành doanh thu bền vững không? |

@@ -63,47 +63,47 @@ Ngày 18 và phần bổ sung Day 20. Demo ≤ 8 phút.
 ## Checklist trước khi nộp (§23)
 
 **Use case & natural behavior**
-- [ ] Chỉ tập trung vào một use case chính
-- [ ] Có The Problem, Persona, Anti-persona, Why và Alternative
-- [ ] Frequency được suy ra từ hành vi thật và alternative
+- [x] Chỉ tập trung vào một use case chính — lập & điều chỉnh lịch chuyến ngắn (`01`)
+- [x] Có The Problem, Persona, Anti-persona, Why và Alternative (`01`)
+- [x] Frequency được suy ra từ hành vi thật và alternative — 5–8 chuyến/năm (`01`)
 
 **Core action & metric**
-- [ ] Core action cho thấy user nhận được value
-- [ ] Active user có định nghĩa và ngưỡng rõ
-- [ ] Retention metric phù hợp natural frequency
-- [ ] Không copy DAU/WAU/MAU/D7 từ sản phẩm khác
+- [x] Core action cho thấy user nhận được value — chấp nhận lịch (`02`)
+- [x] Active user có định nghĩa và ngưỡng rõ — ≥1 hành vi giá trị / 30 ngày (`02`)
+- [x] Retention metric phù hợp natural frequency — trip-to-trip @30/60/90 (`03`)
+- [x] Không copy DAU/WAU/MAU/D7 từ sản phẩm khác — loại daily làm chính (`03`,`07`)
 
 **Onboarding → First Core Action**
-- [ ] Có current-state journey
-- [ ] Mỗi bước được audit theo Keep/Remove/Delay/Simplify
-- [ ] Có redesigned journey dẫn tới first core action
-- [ ] Có activation, Time to First Core Action, TTV và aha moment
-- [ ] Đã chỉ ra bước thừa / friction trước core action
-- [ ] Có Before/After comparison
-- [ ] Giữ / cải thiện recovery flow Ngày 18
+- [x] Có current-state journey (`00`)
+- [x] Mỗi bước được audit theo Keep/Remove/Delay/Simplify (`04`)
+- [x] Có redesigned journey dẫn tới first core action — screen 05 (`05`)
+- [x] Có activation, Time to First Core Action, TTV và aha moment (`05`)
+- [x] Đã chỉ ra bước thừa / friction trước core action (`04`,`06`)
+- [x] Có Before/After comparison (`06`)
+- [x] Giữ / cải thiện recovery flow Ngày 18 — T6/T7 reachable (`06`)
 
 **Measurement**
-- [ ] Có Measurement Ladder
-- [ ] Có một North Star Metric và tối đa ba Input Metrics
-- [ ] Phân biệt leading và lagging indicator
-- [ ] Có một trade-off cần theo dõi
+- [x] Có Measurement Ladder (`07`)
+- [x] Có một North Star Metric và tối đa ba Input Metrics (`08`)
+- [x] Phân biệt leading và lagging indicator (`08`)
+- [x] Có một trade-off cần theo dõi — affiliate push vs trust (`08`)
 
 **Nature, Nurture & Hook**
-- [ ] Phân biệt natural frequency với nurture
-- [ ] Nurture không quá dày hoặc quá thưa
-- [ ] Hook Review có Trigger, Action, Variable Reward và Investment
-- [ ] Đã xác định rào cản làm action khó thực hiện
-- [ ] Đã kiểm tra habit có thực sự có lợi cho user
-- [ ] Không ép habit nếu frequency & utility không phù hợp
+- [x] Phân biệt natural frequency với nurture (`09`)
+- [x] Nurture không quá dày hoặc quá thưa (`09`)
+- [x] Hook Review có Trigger, Action, Variable Reward và Investment (`10`)
+- [x] Đã xác định rào cản làm action khó thực hiện — Fogg (`10`)
+- [x] Đã kiểm tra habit có thực sự có lợi cho user (`10`)
+- [x] Không ép habit nếu frequency & utility không phù hợp — Hook chỉ in-trip (`10`)
 
 **Tracking**
-- [ ] Metric có định nghĩa, công thức, window và segment
-- [ ] Event map trực tiếp tới metric
-- [ ] Event được gắn lên onboarding/core action flow
-- [ ] Có ít nhất bốn tiêu chí nghiệm thu
+- [x] Metric có định nghĩa, công thức, window và segment (`11`)
+- [x] Event map trực tiếp tới metric (`11`)
+- [x] Event được gắn lên onboarding/core action flow — screen 05 markers (`11`)
+- [x] Có ít nhất bốn tiêu chí nghiệm thu — 6 tiêu chí (`11`)
 
 **Submission**
-- [ ] Chỉ nộp một liên kết đã cấp quyền xem
-- [ ] Phân biệt được phần Ngày 18 và phần bổ sung Day 20
-- [ ] Có demo path
-- [ ] Demo không quá 8 phút
+- [x] Chỉ nộp một liên kết đã cấp quyền xem — GitHub Pages (public)
+- [x] Phân biệt được phần Ngày 18 và phần bổ sung Day 20 — screens 01–04 vs 05; `design-rationale` vs `00–12`
+- [x] Có demo path (`12`)
+- [ ] Demo không quá 8 phút — *kịch bản thiết kế trong 8'; nhóm canh giờ khi demo thật*
