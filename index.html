@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lộ Trình AI — Prototype (Day 18 · Track 1)</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --panel:#ffffff; --ink:#1a2230; --muted:#5b6678; --line:#e3e8ef;
+    --teal:#0ea5a4; --teal-d:#0b8f8e; --blue:#2563eb; --blue-soft:#eff5ff;
+    --act:#16a34a; --act-soft:#e7f6ec; --ask:#d97706; --ask-soft:#fdf2e3; --dont:#dc2626; --dont-soft:#fdecec;
+    --fact:#1d4ed8; --fact-soft:#eaf0ff; --infer:#7c3aed; --infer-soft:#f3edff;
+    --warn:#b45309; --warn-soft:#fff7e6;
+    --radius:14px; --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--blue);text-decoration:none}
+  .app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+  .side{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;background:#0f1623;color:#cdd6e4;padding:18px 14px}
+  .brand{display:flex;align-items:center;gap:10px;padding:6px 8px 14px;border-bottom:1px solid #1e2a3d;margin-bottom:10px}
+  .brand .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--teal),#22d3ee);display:grid;place-items:center;font-size:18px}
+  .brand b{font-size:15px;color:#fff;display:block;line-height:1.1}
+  .brand span{font-size:11px;color:#8aa0bd}
+  .nav{display:flex;flex-direction:column;gap:2px;margin-top:8px}
+  .nav button{display:flex;gap:10px;align-items:center;text-align:left;background:transparent;border:0;color:#aab8cc;
+    padding:9px 10px;border-radius:9px;cursor:pointer;font-size:13px;width:100%}
+  .nav button .nidx{color:#6b7d96;font-size:11px;min-width:18px;font-variant-numeric:tabular-nums}
+  .nav button:hover{background:#172234;color:#fff}
+  .nav button.active{background:var(--teal);color:#04201f;font-weight:600}
+  .nav button.active .nidx{color:#04201f}
+  .side .tip{margin-top:14px;font-size:11px;color:#7b8aa3;background:#131d2c;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+  .side .tip a{color:#7fe3da}
+  .main{padding:26px 30px 80px;max-width:760px;margin:0 auto}
+  .crumbs{font-size:12px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+  h1{font-size:23px;margin:2px 0 6px}
+  h2{font-size:18px;margin:24px 0 10px}
+  h3{font-size:15px;margin:16px 0 6px}
+  p{margin:6px 0}
+  .lead{color:var(--muted);max-width:680px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .pad{padding:18px}
+  .grid{display:grid;gap:14px}
+  .g3{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:760px){.g3{grid-template-columns:1fr}}
+  .muted{color:var(--muted)} .small{font-size:12.5px}
+  hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+  .b-act{background:var(--act-soft);color:var(--act);border-color:#bce6c8}
+  .b-ask{background:var(--ask-soft);color:var(--ask);border-color:#f3dcb0}
+  .b-dont{background:var(--dont-soft);color:var(--dont);border-color:#f3c2c2}
+  .b-fact{background:var(--fact-soft);color:var(--fact);border-color:#c7d6ff}
+  .b-infer{background:var(--infer-soft);color:var(--infer);border-color:#dccbff}
+  .b-warn{background:var(--warn-soft);color:var(--warn);border-color:#f3dca8}
+  .b-stage{background:#eef2f7;color:#46546b;border-color:#dce3ec}
+  .b-ev{background:#e9fbf6;color:var(--teal-d);border-color:#bdeee5}
+  .chip{display:inline-block;font-size:12px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;margin:3px 4px 3px 0}
+  .chip:hover{border-color:var(--teal);background:#f0fbfa}
+  .chip.sel{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;color:var(--ink);
+    padding:9px 15px;border-radius:10px;font-size:13.5px;cursor:pointer;font-weight:500}
+  .btn:hover{border-color:#c7d0db;background:#fbfcfe}
+  .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+  .btn.primary:hover{background:var(--teal-d)}
+  .btn.ghost{background:transparent}
+  .btn[disabled]{opacity:.5;cursor:not-allowed}
+  .btn.sm{padding:6px 11px;font-size:12.5px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .spread{justify-content:space-between}
+  /* docref small link under a flow */
+  .docref{margin-top:12px;font-size:12px;color:var(--muted)}
+  .docref a{font-weight:600}
+  /* screen mock */
+  .screen{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);max-width:560px;margin:0 auto}
+  .screen .topbar{background:#0f1623;color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;font-size:13px}
+  .screen .topbar .dot{width:8px;height:8px;border-radius:50%;background:#28c76f;display:inline-block;margin-right:6px}
+  .screen .body{padding:16px}
+  .msg{max-width:86%;padding:11px 13px;border-radius:14px;margin:8px 0;font-size:13.5px}
+  .msg.ai{background:#f1f5f9;border:1px solid #e6ecf3;border-bottom-left-radius:4px}
+  .msg.user{background:var(--teal);color:#fff;margin-left:auto;border-bottom-right-radius:4px}
+  .msg .who{font-size:10px;letter-spacing:.05em;text-transform:uppercase;opacity:.7;margin-bottom:3px}
+  .ai-state{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);padding:8px 12px;background:#f7f9fc;border:1px dashed var(--line);border-radius:10px;margin:8px 0}
+  .spinner{width:13px;height:13px;border:2px solid #cfd8e3;border-top-color:var(--teal);border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .progress{height:6px;background:#eef2f7;border-radius:6px;overflow:hidden;margin:8px 0}
+  .progress > i{display:block;height:100%;background:var(--teal);width:0;border-radius:6px;animation:grow 1.6s ease forwards}
+  @keyframes grow{to{width:100%}}
+  .stop{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1px solid var(--line);border-radius:11px;margin:8px 0;background:#fff}
+  .stop .time{font-variant-numeric:tabular-nums;font-weight:600;min-width:52px;font-size:13px}
+  .stop .meta{flex:1}
+  .stop .meta .nm{font-weight:600;font-size:13.5px}
+  .stop .meta .sub{font-size:12px;color:var(--muted)}
+  .daybar{display:flex;align-items:center;gap:8px;margin:14px 0 4px;font-weight:600}
+  .pill{font-size:11px;padding:2px 8px;border-radius:999px;background:#eef2f7;color:#46546b}
+  .warnbar{display:flex;gap:9px;align-items:center;background:var(--warn-soft);border:1px solid #f3dca8;color:var(--warn);
+    padding:9px 12px;border-radius:10px;font-size:12.8px;margin:8px 0}
+  .sysfb{font-size:12px;color:#243b53;background:#f7f9fc;border:1px solid #e6ecf3;border-radius:8px;padding:8px 11px;margin:6px 0}
+  .evidence{border:1px solid var(--line);border-radius:11px;background:#fafcff;padding:12px;margin:8px 0}
+  .evidence .erow{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:4px 0;border-bottom:1px dashed #e7edf5;align-items:center}
+  .evidence .erow:last-child{border-bottom:0}
+  .bar{height:7px;border-radius:5px;background:#e9eef5;overflow:hidden;min-width:90px;flex:1;align-self:center}
+  .bar > i{display:block;height:100%;background:var(--teal)}
+  .hotel{border:1px solid var(--line);border-radius:12px;padding:13px;margin:8px 0;position:relative}
+  .hotel.top{border-color:var(--teal);box-shadow:0 0 0 2px #d6f3ef inset}
+  .rank{position:absolute;top:-9px;left:12px;font-size:10px;font-weight:700;background:var(--teal);color:#fff;padding:2px 8px;border-radius:6px}
+  .kv{font-size:12.5px;color:var(--muted)} .kv b{color:var(--ink)}
+  .loop{display:flex;flex-direction:column}
+  .loopstep{display:flex;gap:13px;padding:9px 0}
+  .loopstep .num{flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;position:relative}
+  .loopstep:not(:last-child) .num:before{content:"";position:absolute;top:28px;left:50%;transform:translateX(-50%);width:2px;height:calc(100% - 4px);background:#d7eeeb}
+  .loopstep .c .t{font-weight:600;font-size:13.5px}
+  .loopstep .c .d{font-size:12.7px;color:var(--muted)}
+  .tag{font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:6px;background:#e9fbf6;color:var(--teal-d);margin-left:6px}
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.ba{grid-template-columns:1fr}}
+  .ba .col{border:1px solid var(--line);border-radius:11px;padding:11px}
+  .ba .col.before{background:#fdecec66} .ba .col.after{background:#e7f6ec66}
+  .ba .col h5{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  .toggle{position:relative;width:40px;height:23px;background:#cdd6e1;border-radius:999px;cursor:pointer;transition:.2s;flex:none}
+  .toggle.on{background:var(--act)}
+  .toggle:after{content:"";position:absolute;top:2px;left:2px;width:19px;height:19px;background:#fff;border-radius:50%;transition:.2s}
+  .toggle.on:after{left:19px}
+  .permrow{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .permrow:last-child{border-bottom:0}
+  .permrow .pt{flex:1} .permrow .pt b{font-size:13.5px}
+  .permrow .pt span{font-size:12px;color:var(--muted);display:block}
+  .stepper{display:flex;gap:6px;margin-bottom:14px}
+  .stepper .sd{flex:1;height:5px;border-radius:5px;background:#e3e8ef}
+  .stepper .sd.on{background:var(--teal)}
+  .hide{display:none!important}
+  .callout{border-left:3px solid var(--blue);background:var(--blue-soft);padding:10px 13px;border-radius:0 10px 10px 0;font-size:12.8px;margin:10px 0}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:6px}
+  .secblock{display:none} .secblock.show{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <div class="logo">🧭</div>
+      <div><b>Lộ Trình AI</b><span>Trợ lý lập &amp; điều chỉnh lịch trình</span></div>
+    </div>
+    <nav class="nav" id="nav">
+      <button data-sec="s01" class="active"><span class="nidx">01</span> Onboarding</button>
+      <button data-sec="s02"><span class="nidx">02</span> Trong hành động</button>
+      <button data-sec="s03"><span class="nidx">03</span> Review · Agency</button>
+      <button data-sec="s04"><span class="nidx">04</span> Failure &amp; Recovery</button>
+      <div style="margin:10px 0 4px;font-size:10px;letter-spacing:.06em;color:#5a6b85;text-transform:uppercase">— Bổ sung Day 20 —</div>
+      <button data-sec="s05"><span class="nidx">05</span> Onboarding tối ưu ✦</button>
+    </nav>
+    <div class="tip">Track 1 · AI Travel Planner<br/><b style="color:#cdd6e4">Tạo &amp; điều chỉnh lịch trình một chuyến đi</b></div>
+  </aside>
+
+  <main class="main">
+
+  <!-- ============ 01 ONBOARDING ============ -->
+  <section id="s01" class="secblock show">
+    <div class="screen">
+      <div class="topbar"><span><span class="dot"></span> Lộ Trình AI</span><span class="small" id="obStepLabel">Bước 1 / 3</span></div>
+      <div class="body">
+        <div class="stepper"><span class="sd on" id="sd1"></span><span class="sd" id="sd2"></span><span class="sd" id="sd3"></span></div>
+
+        <div id="ob1">
+          <h3 style="margin-top:4px">👋 Lộ Trình AI giúp gì cho chuyến đi của bạn?</h3>
+          <div class="callout"><b style="color:var(--act)">✅ AI CÓ THỂ:</b> gợi ý &amp; điều chỉnh lịch trình theo ngày · so sánh khách sạn / phương tiện · ước lượng thời gian di chuyển · điền sẵn thông tin đặt chỗ.</div>
+          <div class="callout" style="border-color:var(--dont);background:var(--dont-soft)"><b style="color:var(--dont)">⛔ AI KHÔNG TỰ LÀM:</b> không tự thanh toán / đặt chỗ thay bạn · không tự quyết điểm đến / ngân sách · không bảo đảm giá &amp; giờ mở cửa luôn cập nhật.</div>
+          <div class="row spread" style="margin-top:14px"><span class="small muted">Bạn là người quyết định cuối cùng.</span><button class="btn primary" onclick="obStep(2)">Tiếp tục →</button></div>
+        </div>
+
+        <div id="ob2" class="hide">
+          <h3 style="margin-top:4px">🔐 Dữ liệu &amp; quyền truy cập</h3>
+          <p class="small muted">Chỉ bật thứ bạn muốn. Mọi mục đều có thể bỏ qua và rút lại sau.</p>
+          <div class="permrow"><div class="pt"><b>Thông tin chuyến đi cơ bản</b><span>Điểm đến, ngày, ngân sách, sở thích — nhập khi cần.</span></div><span class="badge b-act">Tối thiểu</span></div>
+          <div class="permrow"><div class="pt"><b>Kết nối Lịch (tuỳ chọn)</b><span>Tránh xếp trùng ngày bận.</span></div><div class="toggle" id="tgCal" onclick="tog('tgCal')"></div></div>
+          <div class="permrow"><div class="pt"><b>Vị trí (tuỳ chọn)</b><span>Ước lượng phương tiện &amp; quãng đường.</span></div><div class="toggle" id="tgLoc" onclick="tog('tgLoc')"></div></div>
+          <div class="sysfb" style="margin-top:12px">🛈 Dữ liệu chỉ dùng để lập lịch trình cho bạn. Bạn có thể rút quyền bất cứ lúc nào trong <u>Cài đặt → Quyền riêng tư</u>.</div>
+          <div class="row spread" style="margin-top:12px"><button class="btn ghost" onclick="obStep(1)">← Quay lại</button><div class="row"><button class="btn" onclick="obStep(3)">Bỏ qua</button><button class="btn primary" onclick="obStep(3)">Tiếp tục →</button></div></div>
+        </div>
+
+        <div id="ob3" class="hide">
+          <h3 style="margin-top:4px">🚀 Bắt đầu từ đâu cũng được</h3>
+          <p class="small muted">Chọn một điểm xuất phát:</p>
+          <div style="margin:6px 0">
+            <button class="chip" onclick="go('s02')">"Đi đâu đó vài ngày để nghỉ" <span class="muted">(mơ hồ)</span></button>
+            <button class="chip" onclick="go('s02')">"Đi Đà Nẵng 3 ngày"</button>
+            <button class="chip" onclick="go('s02')">Nhập lịch trình có sẵn</button>
+          </div>
+          <div class="callout" style="margin-top:12px"><b>Bạn giữ quyền kiểm soát:</b> mọi lịch trình AI tạo ra đều là <b>BẢN NHÁP</b> cho tới khi bạn xác nhận — sửa / hoàn tác / xoá bất cứ lúc nào.</div>
+          <div class="row spread" style="margin-top:12px"><button class="btn ghost" onclick="obStep(2)">← Quay lại</button><button class="btn primary" onclick="go('s02')">Vào luồng chính →</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 DURING ============ -->
+  <section id="s02" class="secblock">
+    <div class="screen">
+      <div class="topbar"><span><span class="dot"></span> Trợ lý lịch trình</span><span class="small">Đà Nẵng</span></div>
+      <div class="body" id="chatBody">
+        <div class="msg user"><div class="who">Bạn</div>Tôi muốn đi Đà Nẵng 3 ngày.</div>
+        <div class="msg ai"><div class="who">Lộ Trình AI</div>
+          Mình cần <b>2 điều quan trọng nhất</b> để lịch không bị lệch nhu cầu — chỉ 2 câu 👇
+          <div class="sysfb" style="margin:8px 0 2px">🛈 Vì sao hỏi: <b>phong cách</b> quyết định mật độ điểm/ngày; <b>người đi cùng</b> ảnh hưởng nhịp đi. Ngân sách có thể bổ sung sau.</div>
+        </div>
+        <div id="q1" class="msg ai">
+          <div class="who">Câu 1 — Phong cách chuyến đi?</div>
+          <div style="margin-top:6px">
+            <button class="chip" onclick="pickStyle(this,'Nghỉ dưỡng')">😌 Nghỉ dưỡng</button>
+            <button class="chip" onclick="pickStyle(this,'Khám phá')">🧭 Khám phá nhiều điểm</button>
+            <button class="chip" onclick="pickStyle(this,'Cân bằng')">⚖️ Cân bằng</button>
+          </div>
+        </div>
+        <div id="q2" class="msg ai hide">
+          <div class="who">Câu 2 — Đi với ai?</div>
+          <div style="margin-top:6px">
+            <button class="chip" onclick="pickWith(this,'Gia đình có trẻ nhỏ')">👨‍👩‍👧 Gia đình</button>
+            <button class="chip" onclick="pickWith(this,'Cặp đôi')">💑 Cặp đôi</button>
+            <button class="chip" onclick="pickWith(this,'Bạn bè')">🧑‍🤝‍🧑 Bạn bè</button>
+            <button class="chip" onclick="pickWith(this,'Một mình')">🚶 Một mình</button>
+          </div>
+          <div class="small muted" style="margin-top:8px">Hoặc <a href="javascript:void(0)" onclick="skipQ2()">bỏ qua, để AI giả định &amp; ghi rõ</a> →</div>
+        </div>
+        <div id="genState" class="hide">
+          <div class="ai-state"><span class="spinner"></span> AI đang dựng lịch trình nháp…</div>
+          <div class="progress"><i></i></div>
+          <div class="small muted">Đang kiểm tra: khoảng cách di chuyển · giờ mở cửa · mức phù hợp phong cách.</div>
+        </div>
+        <div id="genDone" class="hide">
+          <div class="msg ai"><div class="who">Lộ Trình AI</div>
+            Xong! Bản nháp 3 ngày dựa trên: <span id="recap" class="badge b-infer"></span>. Đây là <b>đề xuất</b>, chưa áp dụng gì.
+            <div class="row" style="margin-top:10px"><button class="btn primary sm" onclick="go('s03')">Xem &amp; review →</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 REVIEW / AGENCY ============ -->
+  <section id="s03" class="secblock">
+    <div class="screen">
+      <div class="topbar"><span><span class="dot"></span> Lịch Đà Nẵng · 3 ngày</span><span class="small">Nháp · tự lưu</span></div>
+      <div class="body">
+        <div class="daybar">📅 Ngày 1 <span class="pill">Cân bằng</span></div>
+        <div class="stop"><div class="time">08:30</div><div class="meta"><div class="nm">Bãi biển Mỹ Khê <span class="badge b-fact">Dữ kiện · cách KS 1.2km</span></div><div class="sub">Tắm biển, ăn sáng.</div></div></div>
+        <div class="stop"><div class="time">11:00</div><div class="meta"><div class="nm">Bảo tàng Chăm <span class="badge b-infer">Suy luận · hợp nhóm thích văn hoá</span></div><div class="sub">AI đề xuất vì gần &amp; mát trưa.</div></div></div>
+        <div class="stop"><div class="time">14:30</div><div class="meta"><div class="nm">Ngũ Hành Sơn <span class="badge b-fact">Dữ kiện · mở 7:00–17:30</span></div><div class="sub">Leo núi, hang động.</div></div></div>
+
+        <hr/>
+        <h3 style="margin:6px 0">🏨 Chọn khách sạn — vì sao AI xếp hạng thế này?</h3>
+        <p class="small muted">AI đang ưu tiên <b>gần biển</b>. Bạn có thể xem &amp; chỉnh tiêu chí.</p>
+        <div class="hotel top"><span class="rank">AI xếp #1</span><div class="row spread"><b>An Beach Hotel</b><span class="badge b-infer">điểm 8.4</span></div><div class="small muted">Gần biển 120m · 1.4 triệu/đêm · 4.3★</div><div style="margin-top:6px"><a href="javascript:void(0)" onclick="toggleWhy()">▸ Vì sao #1? Xem tiêu chí &amp; trọng số</a></div></div>
+        <div class="hotel"><div class="row spread"><b>Hải Âu Budget</b><span class="badge b-infer">điểm 7.6</span></div><div class="small muted">Gần biển 800m · <b>0.9 triệu/đêm (rẻ nhất)</b> · 4.1★</div></div>
+        <div class="hotel"><div class="row spread"><b>Lotus Grand</b><span class="badge b-infer">điểm 7.9</span></div><div class="small muted">Gần biển 1.1km · 1.6 triệu/đêm · <b>4.6★ (cao nhất)</b></div></div>
+
+        <div id="whyPanel" class="evidence hide" style="margin-top:10px">
+          <div class="row spread"><b class="small">🔍 Cách AI tính điểm</b></div>
+          <p class="small muted" style="margin:6px 0">Kéo để chỉnh trọng số — xếp hạng cập nhật ngay:</p>
+          <div class="erow"><span>Gần biển</span><span class="bar" id="bw1"><i style="width:70%"></i></span><span id="lw1" style="min-width:34px;text-align:right">70%</span></div>
+          <input type="range" min="0" max="100" value="70" oninput="reweight(this.value)" style="width:100%"/>
+          <div class="erow"><span>Giá rẻ</span><span class="bar"><i id="bw2" style="width:20%"></i></span><span id="lw2" style="min-width:34px;text-align:right">20%</span></div>
+          <div class="erow"><span>Đánh giá sao</span><span class="bar"><i id="bw3" style="width:10%"></i></span><span id="lw3" style="min-width:34px;text-align:right">10%</span></div>
+          <div class="sysfb" id="reweightMsg" style="margin-top:8px">🛈 Đang ưu tiên <b>gần biển</b> → An Beach Hotel #1. Kéo "Giá rẻ" lên để xem thứ hạng đổi.</div>
+        </div>
+
+        <hr/>
+        <h3 style="margin:6px 0">🧾 Đặt khách sạn</h3>
+        <div class="evidence">
+          <div class="erow" style="border:0"><span>AI đã điền sẵn thông tin đặt chỗ</span><a href="javascript:void(0)" onclick="alert('Undo: đã xoá thông tin điền sẵn (mô phỏng).')">Hoàn tác</a></div>
+          <div class="kv" style="margin:6px 0 10px">Họ tên: <b>Nguyễn An</b> · Ngày: <b>12–14/07</b> · Phòng: <b>Deluxe x1</b> · Khách: <b>2</b> <span class="muted">(nháp, sửa được)</span></div>
+          <div class="erow"><span>Xác nhận thông tin trước khi sang thanh toán</span><button class="btn sm" onclick="document.getElementById('payNote').classList.remove('hide')">Xác nhận</button></div>
+          <div class="erow" style="border:0"><span>Thanh toán &amp; đặt chỗ thực hiện trên trang nhà cung cấp</span><button class="btn sm" disabled title="Bạn tự thực hiện trên trang nhà cung cấp">🔒 Thanh toán &amp; Đặt</button></div>
+          <div id="payNote" class="sysfb hide" style="margin-top:8px">🛈 "Mình đã chuẩn bị xong. Bước thanh toán có rủi ro tài chính &amp; khó hoàn tác, nên <b>bạn</b> bấm xác nhận trên trang nhà cung cấp. Mình sẽ không tự làm thay."</div>
+        </div>
+        <div class="row" style="margin-top:14px"><button class="btn" onclick="go('s04')">Phát hiện vấn đề lịch trình →</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 FAILURE & RECOVERY ============ -->
+  <section id="s04" class="secblock">
+    <div class="screen">
+      <div class="topbar"><span><span class="dot" style="background:#f0a020"></span> Ngày 1 · 6 điểm</span><span class="small">Nháp</span></div>
+      <div class="body">
+        <div class="warnbar">⚠️ <span><b>AI tự nêu vấn đề:</b> Ngày 1 có <b>6 điểm</b> &amp; ~<b>4h di chuyển</b> — có thể quá dày so với "cân bằng".</span></div>
+        <div class="stop"><div class="time">08:00</div><div class="meta"><div class="nm">Mỹ Khê</div></div></div>
+        <div class="stop"><div class="time">09:30</div><div class="meta"><div class="nm">Bảo tàng Chăm</div></div></div>
+        <div class="stop"><div class="time">11:00</div><div class="meta"><div class="nm">Cầu Rồng</div></div></div>
+        <div class="stop"><div class="time">13:30</div><div class="meta"><div class="nm">Ngũ Hành Sơn</div></div></div>
+        <div class="stop"><div class="time">15:30</div><div class="meta"><div class="nm">Hội An (xa 30km)</div><div class="sub">⚠️ di chuyển dài</div></div></div>
+        <div class="stop"><div class="time">19:00</div><div class="meta"><div class="nm">Chợ đêm Sơn Trà</div></div></div>
+
+        <div id="t6start">
+          <p class="small muted" style="margin-top:10px"><b>Lịch chưa ổn?</b> Nêu vấn đề cụ thể (không chỉ "không hữu ích"):</p>
+          <div>
+            <button class="chip" onclick="t6pick(this,'Quá nhiều điểm trong ngày')">Quá nhiều điểm/ngày</button>
+            <button class="chip" onclick="t6pick(this,'Di chuyển quá nhiều')">Di chuyển quá nhiều</button>
+            <button class="chip" onclick="t6pick(this,'Ít thời gian nghỉ')">Ít thời gian nghỉ</button>
+          </div>
+        </div>
+
+        <div id="t6loop" class="hide" style="margin-top:12px">
+          <div class="loop">
+            <div class="loopstep"><div class="num">1</div><div class="c"><div class="t">Bạn phản hồi</div><div class="d" id="t6reason">"Quá nhiều điểm trong ngày"</div></div></div>
+            <div class="loopstep"><div class="num">2</div><div class="c"><div class="t">Hệ thống xác nhận đã hiểu</div><div class="d">"Mình hiểu: Ngày 1 có 6 điểm &amp; ~4h di chuyển, bạn muốn <b id="t6echo">thư thả hơn, ít điểm hơn</b>."</div></div></div>
+            <div class="loopstep"><div class="num">3</div><div class="c"><div class="t">Hệ thống đề xuất khôi phục</div>
+              <div class="d">Chọn một hướng:
+                <div style="margin-top:6px">
+                  <button class="chip" onclick="t6fix(this,'A')">Giãn còn 4 điểm/ngày + buffer (chuyển 2 điểm sang Ngày 3)</button>
+                  <button class="chip" onclick="t6fix(this,'B')">Bỏ Hội An (xa) khỏi Ngày 1</button>
+                  <button class="chip" onclick="t6fix(this,'C')">Giữ nguyên</button>
+                </div>
+              </div></div></div>
+            <div class="loopstep"><div class="num">4</div><div class="c"><div class="t">AI áp dụng <span class="tag">có Undo</span></div><div class="d" id="t6applied">…</div></div></div>
+            <div class="loopstep"><div class="num">5</div><div class="c"><div class="t">Hệ thống nói rõ điều gì được sửa &amp; ghi nhớ</div><div class="d" id="t6memory">…</div></div></div>
+          </div>
+        </div>
+
+        <div id="t6ba" class="hide" style="margin-top:10px">
+          <h3 style="margin:6px 0">So sánh trước / sau</h3>
+          <div class="ba">
+            <div class="col before"><h5>Trước</h5><div class="small">Ngày 1: 6 điểm · ~4h di chuyển · Hội An 30km</div></div>
+            <div class="col after"><h5>Sau</h5><div class="small">Ngày 1: 4 điểm · ~1.5h di chuyển · +nghỉ trưa 12:00–14:00 · Hội An → Ngày 3</div></div>
+          </div>
+          <div class="row" style="margin-top:10px"><button class="btn" onclick="t6undo()">↩︎ Hoàn tác</button><button class="btn primary" onclick="t7scrollTo()">Tốt rồi, tiếp tục →</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="screen" id="t7head">
+      <div class="topbar"><span><span class="dot" style="background:#f0a020"></span> Gợi ý ăn tối · Ngày 1</span><span class="small">Cần kiểm tra</span></div>
+      <div class="body">
+        <div class="stop"><div class="time">19:30</div><div class="meta"><div class="nm">Nhà hàng Bé Mặn <span class="badge b-warn">Độ tin cậy thấp</span></div><div class="sub">Hải sản gần biển · AI đề xuất.</div></div></div>
+        <div class="evidence">
+          <div class="row spread"><b class="small">🔍 Bằng chứng &amp; giới hạn dữ liệu</b></div>
+          <div class="erow"><span>Giờ mở cửa (17:00–22:00)</span><span class="badge b-warn">cập nhật 3 tháng trước</span></div>
+          <div class="erow"><span>Giá &amp; menu</span><span class="badge b-warn">có thể đã đổi</span></div>
+          <div class="erow"><span>Nguồn</span><span class="muted small">Hồ sơ địa điểm · đồng bộ 03/2026</span></div>
+          <div class="sysfb" style="margin-top:8px">🛈 "Thông tin này <b>có thể không còn chính xác</b>. Mình <u>không tự</u> chốt vào lịch như đã xác nhận — bạn nên kiểm tra hoặc chọn phương án thay thế."</div>
+        </div>
+        <div class="row" style="margin-top:6px">
+          <button class="btn sm" onclick="t7act(this,'verify')">📞 Mở để kiểm tra lại</button>
+          <button class="btn sm" onclick="t7act(this,'alt')">🔁 Xem phương án thay thế</button>
+        </div>
+        <div id="t7alt" class="hide" style="margin-top:10px">
+          <div class="hotel"><div class="row spread"><b>Quán Cá Tươi</b><span class="badge b-ev">đồng bộ hôm nay</span></div><div class="small muted">Cách 600m · 4.5★ · đang mở cửa</div><div style="margin-top:6px"><button class="btn primary sm" onclick="t7replace()">Thay vào lịch</button></div></div>
+        </div>
+        <div id="t7done" class="hide sysfb" style="margin-top:10px">✅ Đã thay "Bé Mặn" → "Quán Cá Tươi" (dữ liệu mới hôm nay). Ngày 1 đã cập nhật.</div>
+        <div id="t7verify" class="hide sysfb" style="margin-top:10px">🛈 Mình giữ "Bé Mặn" ở trạng thái <b>"cần xác nhận"</b> (chưa chốt) tới khi bạn kiểm tra xong. Bạn vẫn tiếp tục lên lịch các điểm khác.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 REDESIGNED ONBOARDING → FIRST CORE ACTION (DAY 20 SCAFFOLD) ============ -->
+  <!--
+    TODO Day20 (Bài 3 — §10): Đây là KHUNG để nhóm tự thiết kế lại onboarding.
+    Mục tiêu: đưa user tới FIRST CORE ACTION nhanh nhất, bỏ/hoãn bước thừa.
+    Hành trình mục tiêu (lab §10): vào sản phẩm → hiểu value → minimum setup →
+      hướng dẫn hành vi thật → FIRST CORE ACTION → evidence of value → aha moment → bước tiếp.
+    - Điền core action thực tế từ docs/02-core-action-active-user.md.
+    - Gắn các event marker [event: ...] theo docs/11-metric-tracking.md.
+    - Giữ Day 18 (screens 01–04) nguyên vẹn để phân biệt phần Day 18 vs Day 20.
+  -->
+  <section id="s05" class="secblock">
+    <div class="crumbs">Bổ sung Day 20 · Bài 3 — Onboarding → First Core Action</div>
+    <h1>Onboarding tối ưu (bản thiết kế lại)</h1>
+    <p class="lead">Khung scaffold — thay nội dung TODO bằng thiết kế thật của nhóm. Mỗi bước nên có CTA rõ và rút ngắn đường tới first core action.</p>
+
+    <div class="callout"><b>⚠️ TODO:</b> So sánh với onboarding Day 18 (screen 01). Audit Keep / Remove / Delay / Simplify ở <code>docs/04-onboarding-audit.md</code>; ghi Before/After ở <code>docs/06-before-after-recovery.md</code>.</div>
+
+    <div class="screen" style="margin-top:14px">
+      <div class="topbar"><span><span class="dot"></span> Lộ Trình AI · Onboarding mới</span><span class="small">Day 20</span></div>
+      <div class="body">
+        <!-- [event: onboarding_started] — ghi khi user mở luồng onboarding mới -->
+        <div class="loop">
+          <div class="loopstep"><div class="num">1</div><div class="c"><div class="t">User bước vào &amp; hiểu value proposition</div><div class="d muted">TODO: 1 dòng value rõ ràng, không product tour dài.</div></div></div>
+          <div class="loopstep"><div class="num">2</div><div class="c"><div class="t">Minimum setup</div><div class="d muted">TODO: chỉ giữ field tối thiểu cần để tạo first value · Delay phần còn lại. <!-- [event: setup_completed] --></div></div></div>
+          <div class="loopstep"><div class="num">3</div><div class="c"><div class="t">Hướng dẫn thực hiện hành vi thật</div><div class="d muted">TODO: cho user làm thật thay vì chỉ xem.</div></div></div>
+          <div class="loopstep"><div class="num">4</div><div class="c"><div class="t">★ FIRST CORE ACTION</div><div class="d muted">TODO: điền core action (từ docs/02). <!-- [event: first_core_action] --></div></div></div>
+          <div class="loopstep"><div class="num">5</div><div class="c"><div class="t">Evidence of value → Aha moment</div><div class="d muted">TODO: hiển thị bằng chứng value ngay sau core action. <!-- [event: activation / aha_moment] --></div></div></div>
+          <div class="loopstep"><div class="num">6</div><div class="c"><div class="t">Recovery path (giữ/cải thiện từ Day 18)</div><div class="d muted">TODO: chọn ≥1 trường hợp recovery (lab §10) — đưa user quay lại core action, không kết thúc ở màn lỗi.</div></div></div>
+        </div>
+        <div class="row spread" style="margin-top:12px"><span class="small muted">TTFA &amp; TTV: TODO ước tính</span><button class="btn primary" onclick="go('s01')">↔ So với onboarding Day 18</button></div>
+      </div>
+    </div>
+    <div class="docref">📄 Phân tích đầy đủ → <code>docs/05-onboarding-redesign.md</code></div>
+  </section>
+
+  </main>
+</div>
+
+<script>
+  const secs=['s01','s02','s03','s04','s05'];
+  function setSec(id){
+    secs.forEach(s=>{const el=document.getElementById(s); if(el) el.classList.toggle('show', s===id);});
+    document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active', b.dataset.sec===id));
+  }
+  function go(id){ setSec(id); window.scrollTo({top:0,behavior:'smooth'}); }
+  document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.sec)));
+
+  function obStep(n){
+    [1,2,3].forEach(i=>document.getElementById('ob'+i).classList.toggle('hide', i!==n));
+    [1,2,3].forEach(i=>document.getElementById('sd'+i).classList.toggle('on', i<=n));
+    document.getElementById('obStepLabel').textContent='Bước '+n+' / 3';
+  }
+  function tog(id){ document.getElementById(id).classList.toggle('on'); }
+
+  let styleSel='', withSel='';
+  function pickStyle(el,v){ el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel')); el.classList.add('sel'); styleSel=v; document.getElementById('q2').classList.remove('hide'); }
+  function pickWith(el,v){ el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel')); el.classList.add('sel'); withSel=v; runGen(); }
+  function skipQ2(){ withSel='(AI giả định: cân bằng)'; runGen(); }
+  function runGen(){
+    document.getElementById('genState').classList.remove('hide');
+    setTimeout(()=>{
+      document.getElementById('genState').classList.add('hide');
+      document.getElementById('genDone').classList.remove('hide');
+      document.getElementById('recap').textContent=(styleSel||'cân bằng')+' · '+(withSel||'—');
+      document.getElementById('genDone').scrollIntoView({behavior:'smooth',block:'center'});
+    },1700);
+  }
+
+  function toggleWhy(){ document.getElementById('whyPanel').classList.toggle('hide'); }
+  function reweight(v){
+    v=+v; const beach=v, rest=100-v, price=Math.round(rest*0.66), star=100-beach-price;
+    document.getElementById('bw1').querySelector('i').style.width=beach+'%'; document.getElementById('lw1').textContent=beach+'%';
+    document.getElementById('bw2').style.width=price+'%'; document.getElementById('lw2').textContent=price+'%';
+    document.getElementById('bw3').style.width=star+'%'; document.getElementById('lw3').textContent=star+'%';
+    const m=document.getElementById('reweightMsg');
+    if(price>beach) m.innerHTML='🛈 Bạn ưu tiên <b>giá rẻ</b> → <b>Hải Âu Budget #1</b> (0.9 triệu/đêm). An Beach tụt #2.';
+    else if(star>beach) m.innerHTML='🛈 Bạn ưu tiên <b>đánh giá</b> → <b>Lotus Grand #1</b> (4.6★).';
+    else m.innerHTML='🛈 Đang ưu tiên <b>gần biển</b> → <b>An Beach Hotel #1</b>.';
+  }
+
+  function t6pick(el,reason){
+    document.getElementById('t6start').classList.add('hide');
+    document.getElementById('t6loop').classList.remove('hide');
+    document.getElementById('t6reason').textContent='"'+reason+'"';
+    const echo=reason.includes('điểm')?'thư thả hơn, ít điểm hơn':reason.includes('chuyển')?'giảm di chuyển đường dài':'có thêm thời gian nghỉ';
+    document.getElementById('t6echo').textContent=echo;
+    document.getElementById('t6loop').scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  function t6fix(el,opt){
+    el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel')); el.classList.add('sel');
+    const ap=document.getElementById('t6applied'), mem=document.getElementById('t6memory');
+    if(opt==='A'){ ap.innerHTML='✅ Đã giãn Ngày 1 còn <b>4 điểm</b>, chuyển <b>Cầu Rồng &amp; Hội An sang Ngày 3</b>, thêm nghỉ trưa 12:00–14:00. <a href="javascript:void(0)" onclick="t6undo()">Hoàn tác</a>';
+      mem.innerHTML='"Đã sửa Ngày 1. <b>Ghi nhớ cho lịch sau:</b> bạn thích tối đa ~4 điểm/ngày?" <button class="btn sm" onclick="t6remember(true)">Có</button> <button class="btn sm" onclick="t6remember(false)">Chỉ lần này</button>'; }
+    else if(opt==='B'){ ap.innerHTML='✅ Đã bỏ <b>Hội An (30km)</b> khỏi Ngày 1, giảm ~2h di chuyển. <a href="javascript:void(0)" onclick="t6undo()">Hoàn tác</a>';
+      mem.innerHTML='"Đã bỏ điểm xa. Muốn mình <b>tránh ghép điểm &gt;20km vào cùng ngày</b> ở lịch sau?" <button class="btn sm" onclick="t6remember(true)">Có</button> <button class="btn sm" onclick="t6remember(false)">Không</button>'; }
+    else { ap.innerHTML='Giữ nguyên. Vẫn để cảnh báo "Ngày 1 khá dày".'; mem.innerHTML='Không thay đổi, không ghi nhớ điều gì mới.'; }
+    document.getElementById('t6ba').classList.toggle('hide', opt==='C');
+  }
+  function t6remember(v){
+    document.getElementById('t6memory').innerHTML = v
+      ? '✅ "Đã ghi nhớ: ưu tiên ≤4 điểm/ngày. Đổi trong <u>Cài đặt → Sở thích</u>."'
+      : '☑️ "OK, chỉ lần này, <b>không ghi nhớ</b> cho lần sau."';
+  }
+  function t6undo(){
+    document.getElementById('t6loop').classList.add('hide');
+    document.getElementById('t6ba').classList.add('hide');
+    document.getElementById('t6start').classList.remove('hide');
+    document.querySelectorAll('#t6start .chip').forEach(c=>c.classList.remove('sel'));
+  }
+  function t7scrollTo(){ document.getElementById('t7head').scrollIntoView({behavior:'smooth',block:'start'}); }
+
+  function t7act(el,what){
+    el.parentElement.querySelectorAll('.btn').forEach(b=>b.classList.remove('primary'));
+    if(what==='alt'){ document.getElementById('t7alt').classList.remove('hide'); document.getElementById('t7verify').classList.add('hide'); el.classList.add('primary'); }
+    else { document.getElementById('t7verify').classList.remove('hide'); document.getElementById('t7alt').classList.add('hide'); el.classList.add('primary'); }
+  }
+  function t7replace(){ document.getElementById('t7alt').classList.add('hide'); document.getElementById('t7done').classList.remove('hide'); }
+</script>
+</body>
+</html>
