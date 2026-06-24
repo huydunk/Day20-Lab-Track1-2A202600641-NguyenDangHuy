@@ -23,16 +23,20 @@
 8. Bước tiếp theo
 ```
 
+> Prototype: **screen 05** trình bày dạng **Trước vs Sau cạnh nhau** — cột **Before** (Day 18) là ảnh
+> chụp tĩnh, khối "Khác biệt & cải tiến" ở giữa, cột **After** (Day 20) là **bản chạy được (bấm thử)**.
+> Các bước dưới đây map vào cột After (giữ ID để gắn event).
+
 | Bước | Thiết kế của nhóm | Màn hình / thành phần prototype |
 |---|---|---|
-| 1 Vào sản phẩm | Mở thẳng vào ô chọn điểm đến, không tường giải thích. | screen 05 · `#r5s1` (chip "Đi Đà Nẵng 3 ngày") · `[event: onboarding_started]` |
-| 2 Value proposition | 1 dòng: "Lên lịch một chuyến đi khả thi trong ~1 phút"; nêu rõ "mọi quyền & chi tiết hỏi sau". | screen 05 · `#r5s1` (h3 + sysfb) |
-| 3 Minimum setup | **Chỉ 1 câu cốt lõi** (phong cách); "đi với ai" + quyền được hoãn. | screen 05 · `#r5s2` (chip phong cách) · `[event: setup_completed]` |
-| 4 Hướng dẫn hành vi thật | AI dựng nháp thật (không product tour) → mini lịch có nhãn Dữ kiện/Suy luận. | screen 05 · `#r5s3 → #r5draft` · `[event: draft_generated]` = activation |
+| 1 Vào sản phẩm | Mở thẳng vào ô chọn điểm đến, không tường giải thích. | screen 05 · cột After `#r5s1` · `[event: onboarding_started]` |
+| 2 Value proposition | 1 dòng: "Lịch khả thi trong ~1 phút"; nêu rõ "mọi quyền & chi tiết hỏi sau". | screen 05 · `#r5s1` (vt + vd) |
+| 3 Minimum setup | **Chỉ 1 câu cốt lõi** (phong cách); "đi với ai" + quyền được hoãn. | screen 05 · `#r5s2` · `[event: setup_completed]` |
+| 4 Hướng dẫn hành vi thật | AI dựng nháp thật (không product tour) → lịch có nhãn Dữ kiện/Suy luận. | screen 05 · `#r5draft` · `[event: draft_generated]` = activation |
 | 5 First core action ★ | **User bấm "✓ Dùng lịch này"** = chấp nhận lịch. | screen 05 · `#r5acceptBtn` · `[event: itinerary_accepted]` |
-| 6 Evidence of value | Khối "Vì sao lịch này khả thi": 4 điểm/ngày · ~1.5h di chuyển · nhãn nguồn — hiện **ngay tại** nháp, trước/cùng lúc accept. | screen 05 · `.evidence` trong `#r5draft` |
-| 7 Aha moment | Sau accept: "Đã lưu lịch của bạn! … đây là first value." | screen 05 · `#r5done` (sysfb xanh) |
-| 8 Bước tiếp theo | Hỏi quyền (deferred, mặc định TẮT) đúng ngữ cảnh + lối vào recovery T6/T7. | screen 05 · `#r5done` (permrow + warnbar) · `[event: permission_prompted_deferred]` |
+| 6 Evidence of value | "4 điểm/ngày · ~1.5h di chuyển · nhãn nguồn" — gắn ngay tại bước nháp. | screen 05 · `#r5draft` (vd) |
+| 7 Aha moment | Có một lịch khả thi, đáng tin & đã chốt = first value (ngay sau accept). | screen 05 · `#r5acceptBtn` (★) |
+| 8 Bước tiếp theo | Hỏi quyền (deferred, mặc định TẮT) đúng ngữ cảnh + lối vào recovery T6/T7. | screen 05 · `#r5done` · `[event: permission_prompted_deferred]`; recovery → screen 04 |
 
 ## Yêu cầu tối ưu (checklist)
 

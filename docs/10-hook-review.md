@@ -94,7 +94,7 @@ The Tribe (kết nối/công nhận) · The Hunt (tìm tài nguyên/thông tin) 
 
 ```
 Internal / External Trigger   → push "lịch hôm nay" / cảnh báo (T6 quá dày, T7 dữ liệu cũ)
-  ↓                              [screen 04 warnbar · #r5done recovery links]
+  ↓                              [screen 04 warnbar (T6/T7) · link "Recovery" ở khối giữa screen 05]
 Action                        → mở & xem/điều chỉnh lịch hôm nay
   ↓                              [screen 04: chip lý do, chọn hướng sửa]
 Variable Reward               → gợi ý điểm/quán phù hợp · phương án thay thế (Hunt) · lịch chạy mượt (Self)
