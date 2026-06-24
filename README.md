@@ -1,5 +1,7 @@
 # Day 20 Lab — Retention, Engagement & Habit Loop (Track 1)
 
+> 🔗 **Liên kết nộp bài (prototype):** https://huydunk.github.io/Day20-Lab-Track1-2A202600641-NguyenDangHuy/
+
 Tiếp tục prototype **Ngày 18** (AI Travel Planner — "Lộ Trình AI"), áp dụng kiến thức Ngày 19 để đi
 từ use case & hành vi tự nhiên của người dùng → core action → retention metric → onboarding tối ưu →
 habit loop → tracking.
@@ -49,8 +51,12 @@ docs/
 6. Hook Model — `10` · 7. Metric Tracking Requirement — `11` · 8. Chỉnh sửa prototype — `index.html` screen 05.
 
 ## Nộp bài
-Nộp **một liên kết duy nhất** (đã cấp quyền xem) tới prototype hoặc tệp trình bày — ưu tiên link
-GitHub Pages của `index.html`. Phân biệt rõ phần Ngày 18 và phần bổ sung Day 20. Demo ≤ 8 phút.
+Nộp **một liên kết duy nhất** (đã cấp quyền xem):
+
+**https://huydunk.github.io/Day20-Lab-Track1-2A202600641-NguyenDangHuy/**
+
+Link này là GitHub Pages của `index.html`, tự cập nhật mỗi lần push lên `main`. Phân biệt rõ phần
+Ngày 18 và phần bổ sung Day 20. Demo ≤ 8 phút.
 
 ---
 
